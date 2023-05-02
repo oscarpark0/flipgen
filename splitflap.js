@@ -23,6 +23,9 @@ String.prototype.replaceAt=function(index, replacement) {
   return left + replacement + right;
 }
 
+/**
+ * Default configuration values for splitFlap
+ */
 let splitFlapDefaults = {
   'timeOut' : 2000,
   'tickTimeOut' : 60,
@@ -30,10 +33,13 @@ let splitFlapDefaults = {
 };
 
 /**
+ * SplitFlap constructor
  *
-*/
-function splitFlap(domElement, texts, options = splitFlapDefaults ){
-
+ * @param {HTMLElement} domElement - The DOM element to apply the SplitFlap effect on
+ * @param {string[]} texts - The texts to display using the SplitFlap effect
+ * @param {object} options - Configuration options (timeOut, tickTimeOut, nbJumpIterations)
+ */
+function splitFlap(domElement, texts, options = splitFlapDefaults) {
   let curIndex = -1;
   let curDoneIterations = 0;
   let curText;
@@ -45,22 +51,18 @@ function splitFlap(domElement, texts, options = splitFlapDefaults ){
 
   setTimeout(changeText, timeOut);
 
-  function changeText(){
-
+  function changeText() {
     let beforeText;
     let afterText;
 
-    if(curIndex >= 0){
+    if (curIndex >= 0) {
       beforeText = texts[curIndex];
-      if(curIndex == texts.length-1){
+      if (curIndex == texts.length - 1) {
         afterText = texts[0];
+      } else {
+        afterText = texts[curIndex + 1];
       }
-      else{
-        afterText = texts[curIndex+1];
-      }
-    }
-    else
-    {
+    } else {
       beforeText = domElement.innerText;
       afterText = texts[0];
     }
@@ -68,93 +70,71 @@ function splitFlap(domElement, texts, options = splitFlapDefaults ){
     transitionText(beforeText, afterText);
   }
 
-  function updateIndex(){
-    if(curIndex < texts.length-1)
-    {
+  function updateIndex() {
+    if (curIndex < texts.length - 1) {
       curIndex++;
-    }
-    else
-    {
+    } else {
       curIndex = 0;
     }
   }
 
-  function transitionText(startText, endText){
+  function transitionText(startText, endText) {
     curText = startText;
 
-    if(endText.length < curText.length){
-      let diff = curText.length-endText.length;
-      curEndText = endText+" ".repeat(diff);
-    }
-    else
-    {
+    if (endText.length < curText.length) {
+      let diff = curText.length - endText.length;
+      curEndText = endText + " ".repeat(diff);
+    } else {
       curEndText = endText;
     }
     transitionTextTick();
   }
 
-  function transitionTextTick(){
+  function transitionTextTick() {
     let endLength;
     let startLength;
 
-    if(curText.length == null){
-      startLength=0;
-    }
-    else
-    {
+    if (curText.length == null) {
+      startLength = 0;
+    } else {
       startLength = curText.length;
     }
-    if(curEndText.length == null){
-      endLength=0;
-    }
-    else
-    {
+    if (curEndText.length == null) {
+      endLength = 0;
+    } else {
       endLength = curEndText.length;
     }
 
-    var longestLength = (startLength >= endLength ? startLength : endLength);
+    var longestLength = startLength >= endLength ? startLength : endLength;
 
     for (var i = 0; i < longestLength; i++) {
       let curCharCode = curText.charCodeAt(i);
 
-      if(curCharCode == undefined || isNaN(curCharCode))
-      {
+      if (curCharCode == undefined || isNaN(curCharCode)) {
         curCharCode = " ".charCodeAt(0);
-        curText = curText.replaceAt(i," ");
-      }
-      else
-      {
-        if(curText.charAt(i)!=curEndText.charAt(i)){
-          if(curCharCode >= "z".charCodeAt(0) || curCharCode < " ".charCodeAt(0))
-          {
+        curText = curText.replaceAt(i, " ");
+      } else {
+        if (curText.charAt(i) != curEndText.charAt(i)) {
+          if (curCharCode >= "z".charCodeAt(0) || curCharCode < " ".charCodeAt(0)) {
             curCharCode = " ".charCodeAt(0);
-          }
-          else{
-            curCharCode ++;
-          }
-          curText = curText.replaceAt(i,String.fromCharCode(curCharCode));
-        }
-      }
-    }
+	} else {
+		curCharCode++;
+	}
+		curText = curText.replaceAt(i, String.fromCharCode(curCharCode));
+	}
+	}
+	}
+		if (curDoneIterations >= nbJumpIterations || curText.trim().localeCompare(curEndText.trim()) == 0) {
+			domElement.innerText = curText;
 
-    if(curDoneIterations >= nbJumpIterations || curText.trim().localeCompare(curEndText.trim()) == 0 ){
-      domElement.innerText=curText;
-
-      if(curText.trim().localeCompare(curEndText.trim()) != 0)
-{
-setTimeout(transitionTextTick, tickTimeOut);
+		if (curText.trim().localeCompare(curEndText.trim()) != 0) {
+		curDoneIterations++;
+	  } else {
+		curDoneIterations = 0;
+		setTimeout(changeText, timeOut);
+	  }
+	} else {
+	  setTimeout(transitionTextTick, tickTimeOut);
+	}
+	}
 }
-else
-{
-setTimeout(changeText,timeOut);
-}
-curDoneIterations = 0;
-}
-else
-{
-curDoneIterations++;
-setTimeout(transitionTextTick, tickTimeOut);
-}
-}
-}
-module.exports = { splitFlap };
