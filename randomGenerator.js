@@ -48,31 +48,13 @@ async function generateBinaryString2() {
   var length = 32; // change it to the desired length
   var result = await window.generateTrueRandomBinaryString(length);
   var resultDiv = document.getElementById("result");
-  animateSplitFlap(resultDiv, result);
+  resultDiv.innerHTML = result; // Add the result to the resultDiv element
 }
 
 async function generateRandomText2() {
-  var length = 1000; // change it to the desired length
+  var length = 32; // change it to the desired length
   var result = await window.generateTrueRandomText(length);
   var resultDiv = document.getElementById("result");
-  animateSplitFlap(resultDiv, result);
+  resultDiv.innerHTML = result; // Add the result to the resultDiv element
 }
 
-
-function animateSplitFlap(container, text) {
-  const oldSpan = container.querySelector(".split-flap span");
-  if (oldSpan) {
-    splitflap.stop();
-    container.removeChild(oldSpan);
-  }
-
-  const newSpan = document.createElement("span");
-  newSpan.style.top = "100%";
-  container.querySelector(".split-flap").appendChild(newSpan);
-
-  splitflap(newSpan, [text], {
-    'timeOut' : 3000,
-    'tickTimeOut' : 60,
-    'nbJumpIterations' : 10,
-  });
-}
