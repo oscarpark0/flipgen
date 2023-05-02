@@ -1,5 +1,7 @@
+export {};
+
 async function fetchTrueRandomString(length, allowedCharacters) {
-  const apiKey = process.env.API_KEY; // Get API key from environment variable
+  const apiKey = import.meta.env.VAR_RANDOM_API_KEY;
   const url = `https://api.random.org/json-rpc/2/invoke`;
 
   const requestData = {
