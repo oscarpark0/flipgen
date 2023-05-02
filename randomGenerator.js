@@ -1,20 +1,20 @@
 async function fetchTrueRandomString(length, allowedCharacters) {
-  const apiKey = process.env.API_KEY; // Use environment variable for API key
+  const apiKey = '12f0568f-b9ff-41a1-992a-b929cb285cc1'; // Replace with your original API key from Random.org
   const url = `https://api.random.org/json-rpc/2/invoke`;
 
   const requestData = {
-    jsonrpc: "2.0",
-    method: "generateStrings",
+    jsonrpc: '2.0',
+    method: 'generateStrings',
     params: {
       apiKey: apiKey,
       n: 1,
       length: length,
       characters: allowedCharacters,
-      replacement: true
+      replacement: true,
     },
-    id: 1
+    id: 1,
   };
-
+  
   const response = await fetch(url, {
     method: "POST",
     headers: {
