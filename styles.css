@@ -1,0 +1,51 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.result {
+  animation-name: fade-in;
+  animation-duration: 1s;
+  font-weight: bold;
+  margin-top: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.fenway-scoreboard {
+  background-color: #0b3d02;
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+  font-size: 24px;
+  padding: 20px;
+  border: 5px solid #ffffff;
+  max-width: 800px;
+  margin: 0 auto;
+}
+/*... existing CSS ...*/
+
+.split-flap {
+  overflow: hidden;
+  position: relative;
+  height: 1.2em;
+}
+
+.split-flap span {
+  position: absolute;
+  width: 100%;
+  animation: flap 0.5s ease-in-out 1;
+  white-space: pre;
+}
+
+@keyframes flap {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
