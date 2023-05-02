@@ -1,7 +1,5 @@
-export {};
-
 async function fetchTrueRandomString(length, allowedCharacters) {
-  const apiKey = import.meta.env.VAR_RANDOM_API_KEY;
+  const apiKey = process.env.API_KEY; // Use environment variable for API key
   const url = `https://api.random.org/json-rpc/2/invoke`;
 
   const requestData = {
@@ -78,4 +76,3 @@ function animateSplitFlap(container, text) {
     'nbJumpIterations' : 10,
   });
 }
-
